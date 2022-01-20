@@ -22,7 +22,7 @@ impl<'a> Query<'a> {
                     
                 },
                 "create" => {
-
+                    
                 },
                 x => {
                     if x != " " {
@@ -31,14 +31,28 @@ impl<'a> Query<'a> {
                     if x == ";" {
 
                     }
+                    if x.starts_with("(") {
+                        let a = x.find(")");
+                        match a {
+                            Some(idx) => {
+                                
+                            },
+                            None => {}
+                        }
+                    }
                 }
             }
         }
+    }
+
+    pub fn get_node_properties(node_str: &str) {
+
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn it_works() {
         let result = 2 + 2;

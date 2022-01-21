@@ -58,7 +58,8 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
 
     let mut inside_string = false;
     let mut after_bar = false;
-    let mut tokens: Vec<&str> = vec![];
+    let mut after_dash = false;
+    let mut tokens: Vec<String> = vec![];
 
     let mut owned_string = "".to_owned();
 
@@ -70,9 +71,16 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
                 owned_string.push(c);
                 after_bar = false;
             }
+            continue;
         }
         if c == ' ' {
-            
+            if inside_string {
+                owned_string.push(c);
+            } else {
+                tokens.push(owned_string.clone());
+                owned_string = "".to_string();
+            }
+            continue;
         }
         if c == '"' {
             if !inside_string {
@@ -81,18 +89,27 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
             } else {
                 owned_string.push(c);
             }
+            continue;
         }
+        if c == '(' {}
+        if c == ')' {}
+        if c == '-' {}
+        if c == '>' {}
+        if c == '[' {}
+        if c == ']' {}
         if c == '\'' {
-            
+            continue;
         }
         if c == '\n' {
-            
+            continue;
         }
         if c.is_numeric() {
-            
+            owned_string.push(c);
+            continue;
         }
         if c.is_alphabetic() {
-
+            owned_string.push(c);
+            continue;
         }
         if c.is_control() {
 

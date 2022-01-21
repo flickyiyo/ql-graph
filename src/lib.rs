@@ -59,11 +59,24 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
     let mut inside_string = false;
     let mut after_bar = false;
     let mut after_dash = false;
+    let mut inside_node = false;
+    let mut inside_edge = false;
+    let mut inside_props = false;
     let mut tokens: Vec<String> = vec![];
 
     let mut owned_string = "".to_owned();
 
     for c in chars {
+        if inside_string && c != '"' {
+            owned_string.push(c);
+            continue;
+        }
+        match c {
+            '(' => {},
+            ')' => {},
+            _ => {}
+        }
+        
         if c == '\\' {
             if !after_bar {
                 after_bar = true;
@@ -91,12 +104,24 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
             }
             continue;
         }
-        if c == '(' {}
-        if c == ')' {}
-        if c == '-' {}
-        if c == '>' {}
-        if c == '[' {}
-        if c == ']' {}
+        if c == '(' {
+
+        }
+        if c == ')' {
+
+        }
+        if c == '-' {
+
+        }
+        if c == '>' {
+
+        }
+        if c == '[' {
+
+        }
+        if c == ']' {
+
+        }
         if c == '\'' {
             continue;
         }

@@ -35,9 +35,11 @@ impl<'a> Query<'a> {
                         let a = x.find(")");
                         match a {
                             Some(idx) => {
-                                
+
                             },
-                            None => {}
+                            None => {
+                                
+                            }
                         }
                     }
                 }
@@ -48,6 +50,58 @@ impl<'a> Query<'a> {
     pub fn get_node_properties(node_str: &str) {
 
     }
+}
+
+pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
+    let vec_str = query.as_str().split("");
+    let chars = query.chars();
+
+    let mut inside_string = false;
+    let mut after_bar = false;
+    let mut tokens: Vec<&str> = vec![];
+
+    let mut owned_string = "".to_owned();
+
+    for c in chars {
+        if c == '\\' {
+            if !after_bar {
+                after_bar = true;
+            } else {
+                owned_string.push(c);
+                after_bar = false;
+            }
+        }
+        if c == ' ' {
+            
+        }
+        if c == '"' {
+            if !inside_string {
+                owned_string.push(c);
+                inside_string = true;
+            } else {
+                owned_string.push(c);
+            }
+        }
+        if c == '\'' {
+            
+        }
+        if c == '\n' {
+            
+        }
+        if c.is_numeric() {
+            
+        }
+        if c.is_alphabetic() {
+
+        }
+        if c.is_control() {
+
+        }
+    }
+
+
+
+    None
 }
 
 #[cfg(test)]

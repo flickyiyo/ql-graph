@@ -5,6 +5,16 @@ pub struct Query<'a> {
     pub query_string: &'a String,
 }
 
+// pub struct Token {
+//     pub token_str: str
+    
+    
+// }
+
+pub type Token = str;
+
+type Callback = fn(char) -> Option<Token>;
+
 impl<'a> Query<'a> {
     pub fn new(query_string: &'a String) -> Self {
         Self { query_string }
@@ -58,7 +68,7 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
 
     let mut inside_string = false;
     let mut after_bar = false;
-    let mut after_dash = false;
+    let mut after_backslash = false;
     let mut inside_node = false;
     let mut inside_edge = false;
     let mut inside_props = false;
@@ -67,77 +77,30 @@ pub fn divide_tokens(query: &String) -> Option<Vec<&str>> {
     let mut owned_string = "".to_owned();
 
     for c in chars {
-        if inside_string && c != '"' {
+        if inside_string && (c != '"' && !after_backslash) {
             owned_string.push(c);
+            if after_backslash {
+                after_backslash = false;
+            } else if c == '\\' {
+                after_backslash = true;
+            }
             continue;
         }
         match c {
-            '(' => {},
-            ')' => {},
-            _ => {}
-        }
-        
-        if c == '\\' {
-            if !after_bar {
-                after_bar = true;
-            } else {
-                owned_string.push(c);
-                after_bar = false;
-            }
-            continue;
-        }
-        if c == ' ' {
-            if inside_string {
-                owned_string.push(c);
-            } else {
-                tokens.push(owned_string.clone());
-                owned_string = "".to_string();
-            }
-            continue;
-        }
-        if c == '"' {
-            if !inside_string {
+            '"' => {
                 owned_string.push(c);
                 inside_string = true;
-            } else {
-                owned_string.push(c);
+                continue;
+            },
+            ')' => {
+
+            },
+            '(' => {
+
+            },
+            _ => {
+
             }
-            continue;
-        }
-        if c == '(' {
-
-        }
-        if c == ')' {
-
-        }
-        if c == '-' {
-
-        }
-        if c == '>' {
-
-        }
-        if c == '[' {
-
-        }
-        if c == ']' {
-
-        }
-        if c == '\'' {
-            continue;
-        }
-        if c == '\n' {
-            continue;
-        }
-        if c.is_numeric() {
-            owned_string.push(c);
-            continue;
-        }
-        if c.is_alphabetic() {
-            owned_string.push(c);
-            continue;
-        }
-        if c.is_control() {
-
         }
     }
 
